@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex align-items-center justify-content-between mb-3">
+  <h1 class="h4 mb-0">Entry • {{ date_iso }}</h1>
+  <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary btn-sm">Back to Calendar</a>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-7">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <form method="POST" action="{{ url_for('save_entry') }}">
+          <input type="hidden" name="_csrf" value="{{ csrf_token }}">
+          <input type="hidden" name="date" value="{{ date_iso }}">
+          <div class="mb-3">
+            <label class="form-label">Title</label>
+            <input name="title" class="form-control" value="{{ (entry.title if entry else '') | default('') }}" placeholder="A short title (optional)">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Notes</label>
+            <textarea name="content" class="form-control" rows="10" placeholder="Write your thoughts...">{{ (entry.content if entry else '') | default('') }}</textarea>
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-primary">Save</button>
+            {% if entry %}
+            <form method="POST" action="{{ url_for('delete_entry') }}" class="d-inline">
+              <input type="hidden" name="_csrf" value="{{ csrf_token }}">
+              <input type="hidden" name="date" value="{{ date_iso }}">
+              <button class="btn btn-outline-danger" formaction="{{ url_for('delete_entry') }}" onclick="return confirm('Delete this entry?')">Delete</button>
+            </form>
+            {% endif %}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h2 class="h6">Images</h2>
+        <form method="POST" action="{{ url_for('upload_images') }}" enctype="multipart/form-data" class="mb-3">
+          <input type="hidden" name="_csrf" value="{{ csrf_token }}">
+          <input type="hidden" name="date" value="{{ date_iso }}">
+          <input class="form-control" type="file" name="images" accept="image/*" multiple>
+          <div class="mt-2">
+            <button class="btn btn-outline-primary btn-sm">Upload</button>
+          </div>
+        </form>
+
+        {% if images %}
+        <div class="row g-2">
+          {% for img in images %}
+          <div class="col-6">
+            <div class="position-relative border rounded overflow-hidden">
+              <img src="{{ url_for('uploaded_file', filename=img.filename) }}" alt="{{ img.original_name }}" class="img-fluid">
+            </div>
+            <form method="POST" action="{{ url_for('delete_image') }}" class="mt-1">
+              <input type="hidden" name="_csrf" value="{{ csrf_token }}">
+              <input type="hidden" name="date" value="{{ date_iso }}">
+              <input type="hidden" name="image_id" value="{{ img.id }}">
+              <button class="btn btn-sm btn-outline-danger w-100" onclick="return confirm('Delete this image?')">Delete</button>
+            </form>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+          <p class="text-muted small mb-0">No images yet.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

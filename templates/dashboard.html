@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="h4 mb-3">Your Calendar</h1>
+<div class="card shadow-sm">
+  <div class="card-body">
+    <div id="calendar"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/calendar.js') }}"></script>
+{% endblock %}
