@@ -34,15 +34,15 @@ personal-diary/
 
 │
 
-├── app.py                 # Main Flask application
+├── app.py                 (Main Flask application)
 
-├── templates/             # HTML templates
+├── templates/             (HTML templates)
 
-├── static/                # CSS, JS, images
+├── static/                (CSS, JS, images)
 
-├── diary.db               # SQLite database (auto-created)
+├── diary.db               {SQLite database (auto-created)}
 
-└── README.md              # Project documentation
+└── README.md              (Project documentation)
 
 Notes:
 
@@ -69,6 +69,8 @@ License
 This project is licensed under the MIT License, see the LICENSE file for details.
 
 Connect Me:
+
 LinkedIn: www.linkedin.com/in/om-prakash-anagani-1b17a9241
+
 E_Mail: anaganiomprakashvarma@gmail.com
 
